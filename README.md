@@ -2,7 +2,7 @@
 
 Trabalho prático da disciplina **Tópicos Avançados em Inteligência Artificial** (Prof. Dr. Márcio Andrey Teixeira).
 
-|**Aplicação publicada**|**\[COLE AQUI O LINK PÚBLICO APÓS O DEPLOY]**|
+|**Aplicação publicada**|**https://glicorisco.onrender.com**|
 |-|-|
 |**Integrantes**|Gabriel Cardoso Cezare, Flávio Gabriel Boar, João Pedro Florenço da Silva.|
 
