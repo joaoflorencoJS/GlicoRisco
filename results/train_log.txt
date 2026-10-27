@@ -1,0 +1,45 @@
+Análise inicial: {'registros_brutos': 100000, 'atributos': 8, 'ausentes': 0, 'duplicatas': 3854, 'gender_other': 18, 'prevalencia_bruta': 0.085}
+Após limpeza: 96128 registros; prevalência 8.824%
+Treino: 76902 | Teste: 19226
+Regressão Logística: melhor F1 (CV) = 0.7293 | {'clf__C': 1.0, 'clf__class_weight': None}
+Árvore de Decisão: melhor F1 (CV) = 0.8005 | {'clf__class_weight': None, 'clf__max_depth': 8, 'clf__min_samples_leaf': 1}
+Random Forest: melhor F1 (CV) = 0.7996 | {'clf__class_weight': None, 'clf__max_depth': 10, 'clf__min_samples_leaf': 5}
+
+=== Regressão Logística (teste) ===
+              precision    recall  f1-score   support
+
+sem diabetes      0.966     0.990     0.978     17530
+    diabetes      0.860     0.638     0.733      1696
+
+    accuracy                          0.959     19226
+   macro avg      0.913     0.814     0.855     19226
+weighted avg      0.957     0.959     0.956     19226
+
+
+=== Árvore de Decisão (teste) ===
+              precision    recall  f1-score   support
+
+sem diabetes      0.970     0.999     0.985     17530
+    diabetes      0.990     0.685     0.810      1696
+
+    accuracy                          0.972     19226
+   macro avg      0.980     0.842     0.897     19226
+weighted avg      0.972     0.972     0.969     19226
+
+
+=== Random Forest (teste) ===
+              precision    recall  f1-score   support
+
+sem diabetes      0.970     1.000     0.985     17530
+    diabetes      1.000     0.680     0.809      1696
+
+    accuracy                          0.972     19226
+   macro avg      0.985     0.840     0.897     19226
+weighted avg      0.973     0.972     0.969     19226
+
+
+Modelo escolhido para deploy: Árvore de Decisão
+
+Análise de erros: {'falsos_negativos': 534, 'falsos_positivos': 12, 'fn_hba1c_medio': 6.120037453183521, 'fn_glicose_media': 150.25842696629215, 'fp_hba1c_medio': 6.116666666666666, 'fp_glicose_media': 159.08333333333334, 'fn_idade_media': 60.01498127340824, 'fp_idade_media': 64.33333333333333}
+
+Artefatos salvos.

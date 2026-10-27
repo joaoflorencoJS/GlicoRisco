@@ -1,0 +1,6 @@
+data
+report
+tests
+results
+*.pdf
+__pycache__

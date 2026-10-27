@@ -1,0 +1,179 @@
+{
+  "info": {
+    "registros_brutos": 100000,
+    "atributos": 8,
+    "ausentes": 0,
+    "duplicatas": 3854,
+    "gender_other": 18,
+    "prevalencia_bruta": 0.085,
+    "registros_limpos": 96128,
+    "prevalencia_limpa": 0.08823651797603196
+  },
+  "results": {
+    "Regressão Logística": {
+      "cv_f1": 0.7293042023237162,
+      "params": {
+        "clf__C": 1.0,
+        "clf__class_weight": null
+      },
+      "test": {
+        "accuracy": 0.9589098096327889,
+        "precision": 0.8600953895071543,
+        "recall": 0.6379716981132075,
+        "f1": 0.7325660121868652,
+        "roc_auc": 0.9595802579674736,
+        "pr_auc": 0.8139263026967005,
+        "precision_neg": 0.9658281389136242,
+        "recall_neg": 0.9899600684540787,
+        "f1_neg": 0.9777452250831032,
+        "cm": [
+          [
+            17354,
+            176
+          ],
+          [
+            614,
+            1082
+          ]
+        ]
+      }
+    },
+    "Árvore de Decisão": {
+      "cv_f1": 0.8005224768999437,
+      "params": {
+        "clf__class_weight": null,
+        "clf__max_depth": 8,
+        "clf__min_samples_leaf": 1
+      },
+      "test": {
+        "accuracy": 0.9716009570373453,
+        "precision": 0.989778534923339,
+        "recall": 0.6851415094339622,
+        "f1": 0.8097560975609757,
+        "roc_auc": 0.9708778549440851,
+        "pr_auc": 0.8522612370680546,
+        "precision_neg": 0.9704187901617549,
+        "recall_neg": 0.9993154592127781,
+        "f1_neg": 0.984655162722725,
+        "cm": [
+          [
+            17518,
+            12
+          ],
+          [
+            534,
+            1162
+          ]
+        ]
+      }
+    },
+    "Random Forest": {
+      "cv_f1": 0.7996278254827234,
+      "params": {
+        "clf__class_weight": null,
+        "clf__max_depth": 10,
+        "clf__min_samples_leaf": 5
+      },
+      "test": {
+        "accuracy": 0.9717569957349422,
+        "precision": 1.0,
+        "recall": 0.6798349056603774,
+        "f1": 0.8094068094068094,
+        "roc_auc": 0.9670748561764737,
+        "pr_auc": 0.8677683627095265,
+        "precision_neg": 0.9699551817628507,
+        "recall_neg": 1.0,
+        "f1_neg": 0.9847484762520012,
+        "cm": [
+          [
+            17530,
+            0
+          ],
+          [
+            543,
+            1153
+          ]
+        ]
+      }
+    },
+    "_escolhido": "Árvore de Decisão",
+    "importancia_permutacao": {
+      "gender": 0.0,
+      "smoking_history": 0.0,
+      "hypertension": 0.0,
+      "heart_disease": 0.0011920014530462431,
+      "age": 0.001231551710901313,
+      "bmi": 0.0035684949224442652,
+      "blood_glucose_level": 0.27272989619206073,
+      "HbA1c_level": 0.35623292300819587
+    },
+    "analise_erros": {
+      "falsos_negativos": 534,
+      "falsos_positivos": 12,
+      "fn_hba1c_medio": 6.120037453183521,
+      "fn_glicose_media": 150.25842696629215,
+      "fp_hba1c_medio": 6.116666666666666,
+      "fp_glicose_media": 159.08333333333334,
+      "fn_idade_media": 60.01498127340824,
+      "fp_idade_media": 64.33333333333333
+    }
+  },
+  "depth": [
+    {
+      "depth": 1,
+      "f1_cv": 0.6251,
+      "f1_train": 0.6251
+    },
+    {
+      "depth": 2,
+      "f1_cv": 0.7994,
+      "f1_train": 0.7994
+    },
+    {
+      "depth": 3,
+      "f1_cv": 0.7994,
+      "f1_train": 0.7994
+    },
+    {
+      "depth": 4,
+      "f1_cv": 0.7994,
+      "f1_train": 0.7994
+    },
+    {
+      "depth": 5,
+      "f1_cv": 0.7994,
+      "f1_train": 0.7994
+    },
+    {
+      "depth": 6,
+      "f1_cv": 0.7994,
+      "f1_train": 0.7994
+    },
+    {
+      "depth": 8,
+      "f1_cv": 0.8005,
+      "f1_train": 0.8036
+    },
+    {
+      "depth": 10,
+      "f1_cv": 0.7997,
+      "f1_train": 0.8074
+    },
+    {
+      "depth": 15,
+      "f1_cv": 0.7845,
+      "f1_train": 0.8579
+    },
+    {
+      "depth": 20,
+      "f1_cv": 0.749,
+      "f1_train": 0.9368
+    }
+  ],
+  "split": {
+    "treino": 76902,
+    "teste": 19226,
+    "pos_treino": 6786,
+    "pos_teste": 1696
+  }
+}

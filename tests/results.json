@@ -1,0 +1,195 @@
+[
+  {
+    "id": "T1",
+    "tipo": "válida",
+    "nome": "Adulto jovem saudável",
+    "entrada": {
+      "age": "25",
+      "gender": "Female",
+      "bmi": "22,5",
+      "HbA1c_level": "5.0",
+      "blood_glucose_level": "90",
+      "hypertension": "0",
+      "heart_disease": "0",
+      "smoking_history": "never"
+    },
+    "esperado": "Risco baixo (exames normais, jovem).",
+    "inferencia_local": {
+      "probabilidade": 0.0,
+      "faixa": "baixo",
+      "classe": 0,
+      "avisos": []
+    },
+    "http_status": 200,
+    "app_probabilidade_pct": 0.0,
+    "app_erros": [],
+    "consistente": true
+  },
+  {
+    "id": "T2",
+    "tipo": "válida",
+    "nome": "Exames claramente alterados",
+    "entrada": {
+      "age": "58",
+      "gender": "Male",
+      "bmi": "31.4",
+      "HbA1c_level": "8.2",
+      "blood_glucose_level": "240",
+      "hypertension": "1",
+      "heart_disease": "0",
+      "smoking_history": "former"
+    },
+    "esperado": "Risco alto (HbA1c 8,2% e glicose 240 mg/dL são valores típicos de diabetes).",
+    "inferencia_local": {
+      "probabilidade": 1.0,
+      "faixa": "alto",
+      "classe": 1,
+      "avisos": []
+    },
+    "http_status": 200,
+    "app_probabilidade_pct": 100.0,
+    "app_erros": [],
+    "consistente": true
+  },
+  {
+    "id": "T3",
+    "tipo": "válida",
+    "nome": "Idoso com fatores de risco e exames intermediários",
+    "entrada": {
+      "age": "68",
+      "gender": "Male",
+      "bmi": "34",
+      "HbA1c_level": "6.2",
+      "blood_glucose_level": "140",
+      "hypertension": "1",
+      "heart_disease": "1",
+      "smoking_history": "current"
+    },
+    "esperado": "Risco moderado (exames na zona cinzenta, idade e comorbidades elevam a probabilidade).",
+    "inferencia_local": {
+      "probabilidade": 0.4,
+      "faixa": "moderado",
+      "classe": 0,
+      "avisos": []
+    },
+    "http_status": 200,
+    "app_probabilidade_pct": 40.0,
+    "app_erros": [],
+    "consistente": true
+  },
+  {
+    "id": "T4",
+    "tipo": "inválida",
+    "nome": "Campos vazios, texto e valor fora do intervalo",
+    "entrada": {
+      "age": "abc",
+      "gender": "",
+      "bmi": "500",
+      "HbA1c_level": "",
+      "blood_glucose_level": "140",
+      "hypertension": "0",
+      "heart_disease": "",
+      "smoking_history": "never"
+    },
+    "esperado": "Nenhum cálculo; mensagens de erro claras por campo (HTTP 400).",
+    "inferencia_local": {
+      "erros": {
+        "age": "Idade (anos): informe um número válido.",
+        "bmi": "IMC (kg/m²): valor fora do intervalo aceito (10 a 70).",
+        "HbA1c_level": "HbA1c (%): campo obrigatório.",
+        "gender": "Sexo: selecione uma opção.",
+        "heart_disease": "Doença cardíaca: selecione Sim ou Não."
+      }
+    },
+    "http_status": 400,
+    "app_probabilidade_pct": null,
+    "app_erros": [
+      "Idade (anos): informe um número válido.",
+      "Sexo: selecione uma opção.",
+      "IMC (kg/m²): valor fora do intervalo aceito (10 a 70).",
+      "HbA1c (%): campo obrigatório.",
+      "Doença cardíaca: selecione Sim ou Não."
+    ],
+    "consistente": true
+  },
+  {
+    "id": "T5",
+    "tipo": "difícil",
+    "nome": "Falso negativo real do conjunto de teste (linha 16327)",
+    "entrada": {
+      "age": "41",
+      "gender": "Female",
+      "bmi": "27.8",
+      "HbA1c_level": "6.1",
+      "blood_glucose_level": "155",
+      "hypertension": "0",
+      "heart_disease": "0",
+      "smoking_history": "never"
+    },
+    "esperado": "Rótulo real conhecido: TEM diabetes. Exames na zona intermediária; o modelo tende a subestimar o risco.",
+    "inferencia_local": {
+      "probabilidade": 0.045118,
+      "faixa": "baixo",
+      "classe": 0,
+      "avisos": []
+    },
+    "http_status": 200,
+    "app_probabilidade_pct": 4.5,
+    "app_erros": [],
+    "consistente": true
+  },
+  {
+    "id": "T6",
+    "tipo": "difícil",
+    "nome": "Falso positivo real do conjunto de teste (linha 25570)",
+    "entrada": {
+      "age": "62",
+      "gender": "Female",
+      "bmi": "44.81",
+      "HbA1c_level": "6.2",
+      "blood_glucose_level": "130",
+      "hypertension": "0",
+      "heart_disease": "1",
+      "smoking_history": "No Info"
+    },
+    "esperado": "Rótulo real conhecido: NÃO tem diabetes. IMC muito alto + doença cardíaca + 62 anos elevam o risco estimado.",
+    "inferencia_local": {
+      "probabilidade": 0.596491,
+      "faixa": "alto",
+      "classe": 1,
+      "avisos": []
+    },
+    "http_status": 200,
+    "app_probabilidade_pct": 59.6,
+    "app_erros": [],
+    "consistente": true
+  },
+  {
+    "id": "T7",
+    "tipo": "limítrofe",
+    "nome": "Criança (população pouco representada no treino)",
+    "entrada": {
+      "age": "9",
+      "gender": "Male",
+      "bmi": "17",
+      "HbA1c_level": "5.0",
+      "blood_glucose_level": "90",
+      "hypertension": "0",
+      "heart_disease": "0",
+      "smoking_history": "No Info"
+    },
+    "esperado": "Sem verdade conhecida. Esperado: resultado acompanhado de aviso de menor confiabilidade (idade < 18).",
+    "inferencia_local": {
+      "probabilidade": 0.0,
+      "faixa": "baixo",
+      "classe": 0,
+      "avisos": [
+        "O modelo foi treinado majoritariamente com adultos; para crianças e adolescentes o resultado é menos confiável."
+      ]
+    },
+    "http_status": 200,
+    "app_probabilidade_pct": 0.0,
+    "app_erros": [],
+    "consistente": true
+  }
+]

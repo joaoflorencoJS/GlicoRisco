@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GlicoRisco – triagem de risco de diabetes</title>
+<style>
+:root{
+  --ink:#16222b; --muted:#566772; --line:#cfd9de; --paper:#ffffff; --bg:#eef3f5;
+  --teal:#0f6b7a; --teal-d:#0a4c57; --ok:#2f8f6b; --mid:#d9902b; --hi:#c8402f; --err:#b3261e;
+}
+@media (prefers-color-scheme: dark){
+  :root{--ink:#e6eef1; --muted:#a2b3bb; --line:#33454e; --paper:#17242b; --bg:#0f181d; --teal:#4fb3c4; --teal-d:#7fd0de;
+        --ok:#52c49a; --mid:#e8a94d; --hi:#ef6f5e; --err:#ff8a80;}
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.55 "Segoe UI","Helvetica Neue",Arial,sans-serif}
+a{color:var(--teal-d)}
+.wrap{max-width:1040px;margin:0 auto;padding:28px 20px 56px}
+header{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:6px}
+h1{font-size:1.9rem;margin:0;letter-spacing:-.01em}
+.tag{color:var(--muted);font-size:.95rem}
+.lead{max-width:68ch;margin:6px 0 22px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:1.15fr .85fr;gap:22px;align-items:start}
+@media (max-width:860px){.grid{grid-template-columns:1fr}}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:20px 22px}
+.panel h2{font-size:1.05rem;margin:0 0 14px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px 16px}
+@media (max-width:520px){.row{grid-template-columns:1fr}}
+.f label{display:block;font-weight:600;font-size:.92rem;margin-bottom:3px}
+.f .hint{font-size:.8rem;color:var(--muted);margin-top:3px;line-height:1.35}
+.inp{display:flex;align-items:stretch}
+input,select{width:100%;font:inherit;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:8px 10px;min-height:40px}
+.inp input{border-top-right-radius:0;border-bottom-right-radius:0}
+.unit{display:flex;align-items:center;padding:0 10px;border:1px solid var(--line);border-left:0;border-radius:0 4px 4px 0;background:var(--bg);color:var(--muted);font-size:.85rem;white-space:nowrap}
+input:focus,select:focus,button:focus-visible{outline:3px solid color-mix(in srgb,var(--teal) 55%,transparent);outline-offset:1px}
+.f.bad input,.f.bad select{border-color:var(--err)}
+.msg{color:var(--err);font-size:.85rem;margin-top:3px;font-weight:600}
+.btns{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+button,.ghost{font:inherit;font-weight:600;border-radius:4px;padding:10px 20px;cursor:pointer;min-height:42px}
+button.primary{background:var(--teal);color:#fff;border:1px solid var(--teal)}
+button.primary:hover{background:var(--teal-d)}
+.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);text-decoration:none;display:inline-flex;align-items:center}
+.alert{border:1px solid var(--err);border-left-width:5px;border-radius:4px;padding:10px 14px;margin-bottom:16px;font-size:.92rem}
+.alert strong{color:var(--err)}
+.empty{color:var(--muted);font-size:.95rem}
+.score{font-size:2.6rem;font-weight:700;line-height:1;margin:4px 0 2px;letter-spacing:-.02em}
+.score small{font-size:1rem;font-weight:500;color:var(--muted);letter-spacing:0}
+.band{font-weight:700;font-size:1.05rem;margin-bottom:12px}
+.band.baixo{color:var(--ok)}.band.moderado{color:var(--mid)}.band.alto{color:var(--hi)}
+.gauge{position:relative;height:14px;border-radius:7px;margin:18px 0 6px;
+  background:linear-gradient(90deg,var(--ok) 0 10%,var(--mid) 10% 50%,var(--hi) 50% 100%)}
+.pin{position:absolute;top:-6px;width:4px;height:26px;background:var(--ink);border-radius:2px;transform:translateX(-2px)}
+.scale{position:relative;height:1.2em;font-size:.75rem;color:var(--muted)}
+.scale span{position:absolute;transform:translateX(-50%)}
+.scale span:first-child{transform:none}.scale span:last-child{transform:translateX(-100%)}
+.warn{margin:14px 0 0;padding:10px 14px;background:color-mix(in srgb,var(--mid) 16%,var(--paper));border-radius:4px;font-size:.88rem}
+.warn ul{margin:4px 0 0 18px;padding:0}
+dl.sum{display:grid;grid-template-columns:auto 1fr;gap:3px 14px;margin:14px 0 0;font-size:.88rem}
+dl.sum dt{color:var(--muted)}dl.sum dd{margin:0}
+.limits{margin-top:22px}
+.limits h2{margin-top:0}
+.limits ul{margin:6px 0 0 18px;padding:0;color:var(--muted);font-size:.92rem}
+.limits li{margin:4px 0}
+table.dict{border-collapse:collapse;width:100%;font-size:.88rem;margin-top:8px}
+table.dict th,table.dict td{border-top:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+table.dict th{color:var(--muted);font-weight:600}
+.foot{margin-top:18px;font-size:.82rem;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>GlicoRisco</h1>
+    <span class="tag">Triagem de risco de diabetes por aprendizado de máquina</span>
+  </header>
+  <p class="lead">Informe dados de saúde e exames de uma pessoa. O modelo estima a probabilidade de ela ter diabetes, com base em padrões de um conjunto de 96 mil registros. <strong>É uma ferramenta educacional: não substitui exame nem consulta médica.</strong></p>
+
+  <div class="grid">
+    <section class="panel" aria-labelledby="h-form">
+      <h2 id="h-form">Dados da pessoa</h2>
+      {% if errors %}
+      <div class="alert" role="alert"><strong>Não foi possível calcular.</strong> Corrija os campos destacados abaixo.</div>
+      {% endif %}
+      <form method="post" action="/predict" novalidate>
+        <div class="row">
+          <div class="f {{ 'bad' if errors.age }}">
+            <label for="age">Idade</label>
+            <div class="inp"><input id="age" name="age" inputmode="decimal" placeholder="ex.: 45" value="{{ form.age or '' }}"><span class="unit">anos</span></div>
+            {% if errors.age %}<div class="msg">{{ errors.age }}</div>{% endif %}
+          </div>
+          <div class="f {{ 'bad' if errors.gender }}">
+            <label for="gender">Sexo</label>
+            <select id="gender" name="gender">
+              <option value="">Selecione…</option>
+              {% for k,v in genders.items() %}<option value="{{k}}" {{ 'selected' if form.gender==k }}>{{v}}</option>{% endfor %}
+            </select>
+            {% if errors.gender %}<div class="msg">{{ errors.gender }}</div>{% endif %}
+          </div>
+          <div class="f {{ 'bad' if errors.bmi }}">
+            <label for="bmi">IMC</label>
+            <div class="inp"><input id="bmi" name="bmi" inputmode="decimal" placeholder="ex.: 27,5" value="{{ form.bmi or '' }}"><span class="unit">kg/m²</span></div>
+            <div class="hint">Peso (kg) ÷ altura² (m²).</div>
+            {% if errors.bmi %}<div class="msg">{{ errors.bmi }}</div>{% endif %}
+          </div>
+          <div class="f {{ 'bad' if errors.smoking_history }}">
+            <label for="smoking_history">Histórico de tabagismo</label>
+            <select id="smoking_history" name="smoking_history">
+              <option value="">Selecione…</option>
+              {% for k,v in smoking.items() %}<option value="{{k}}" {{ 'selected' if form.smoking_history==k }}>{{v}}</option>{% endfor %}
+            </select>
+            {% if errors.smoking_history %}<div class="msg">{{ errors.smoking_history }}</div>{% endif %}
+          </div>
+          <div class="f {{ 'bad' if errors.HbA1c_level }}">
+            <label for="HbA1c_level">HbA1c (hemoglobina glicada)</label>
+            <div class="inp"><input id="HbA1c_level" name="HbA1c_level" inputmode="decimal" placeholder="ex.: 5,7" value="{{ form.HbA1c_level or '' }}"><span class="unit">%</span></div>
+            <div class="hint">Média da glicose nos últimos ~3 meses.</div>
+            {% if errors.HbA1c_level %}<div class="msg">{{ errors.HbA1c_level }}</div>{% endif %}
+          </div>
+          <div class="f {{ 'bad' if errors.blood_glucose_level }}">
+            <label for="blood_glucose_level">Glicose no sangue</label>
+            <div class="inp"><input id="blood_glucose_level" name="blood_glucose_level" inputmode="decimal" placeholder="ex.: 110" value="{{ form.blood_glucose_level or '' }}"><span class="unit">mg/dL</span></div>
+            {% if errors.blood_glucose_level %}<div class="msg">{{ errors.blood_glucose_level }}</div>{% endif %}
+          </div>
+          <div class="f {{ 'bad' if errors.hypertension }}">
+            <label for="hypertension">Hipertensão diagnosticada?</label>
+            <select id="hypertension" name="hypertension">
+              <option value="">Selecione…</option>
+              <option value="0" {{ 'selected' if form.hypertension=='0' }}>Não</option>
+              <option value="1" {{ 'selected' if form.hypertension=='1' }}>Sim</option>
+            </select>
+            {% if errors.hypertension %}<div class="msg">{{ errors.hypertension }}</div>{% endif %}
+          </div>
+          <div class="f {{ 'bad' if errors.heart_disease }}">
+            <label for="heart_disease">Doença cardíaca diagnosticada?</label>
+            <select id="heart_disease" name="heart_disease">
+              <option value="">Selecione…</option>
+              <option value="0" {{ 'selected' if form.heart_disease=='0' }}>Não</option>
+              <option value="1" {{ 'selected' if form.heart_disease=='1' }}>Sim</option>
+            </select>
+            {% if errors.heart_disease %}<div class="msg">{{ errors.heart_disease }}</div>{% endif %}
+          </div>
+        </div>
+        <div class="btns">
+          <button class="primary" type="submit">Calcular risco</button>
+          <a class="ghost" href="/">Limpar</a>
+        </div>
+      </form>
+    </section>
+
+    <section class="panel" aria-labelledby="h-res" aria-live="polite">
+      <h2 id="h-res">Resultado</h2>
+      {% if result %}
+        <div class="score">{{ '%.1f'|format(result.probability*100) }}%<small> de probabilidade estimada</small></div>
+        <div class="band {{ result.band }}">Risco {{ result.band }}{% if result.label==1 %} — o modelo classifica como diabetes{% endif %}</div>
+        <div class="gauge" role="img" aria-label="Probabilidade {{ '%.1f'|format(result.probability*100) }} por cento"><span class="pin" style="left:{{ [[result.probability*100,0]|max,100]|min }}%"></span></div>
+        <div class="scale"><span style="left:0">0%</span><span style="left:10%">10%</span><span style="left:50%">50%</span><span style="left:100%">100%</span></div>
+        <p style="margin:14px 0 0">{{ result.message }}</p>
+        {% if result.warnings %}
+        <div class="warn"><strong>Atenção:</strong><ul>{% for w in result.warnings %}<li>{{ w }}</li>{% endfor %}</ul></div>
+        {% endif %}
+        <dl class="sum">
+          <dt>Idade</dt><dd>{{ '%g'|format(result.input.age) }} anos</dd>
+          <dt>IMC</dt><dd>{{ '%g'|format(result.input.bmi) }} kg/m²</dd>
+          <dt>HbA1c</dt><dd>{{ '%g'|format(result.input.HbA1c_level) }} %</dd>
+          <dt>Glicose</dt><dd>{{ '%g'|format(result.input.blood_glucose_level) }} mg/dL</dd>
+        </dl>
+      {% else %}
+        <p class="empty">Preencha os dados ao lado e clique em <strong>Calcular risco</strong>. O resultado aparece aqui, com a probabilidade estimada e uma faixa de risco.</p>
+        <div class="gauge" aria-hidden="true"></div>
+        <div class="scale"><span style="left:0">0%</span><span style="left:10%">10%</span><span style="left:50%">50%</span><span style="left:100%">100%</span></div>
+        <p class="hint" style="font-size:.82rem;color:var(--muted)">Faixas: abaixo de 10% = baixo; 10% a 50% = moderado; 50% ou mais = alto.</p>
+      {% endif %}
+    </section>
+  </div>
+
+  <section class="panel limits" aria-labelledby="h-lim">
+    <h2 id="h-lim">Limitações desta solução</h2>
+    <ul>
+      <li>O modelo (<strong>{{ meta.modelo }}</strong>) foi treinado com um conjunto de dados público que se comporta como <em>sintético</em>: HbA1c ≥ 6,8% ou glicose ≥ 220 mg/dL sempre aparecem como diabetes, e valores baixos nunca. Ele não foi validado clinicamente.</li>
+      <li>HbA1c e glicose dominam a decisão. Na faixa intermediária (cerca de 40% dos registros) o resultado depende pouco dos exames e mais de idade, IMC, hipertensão e doença cardíaca; ali o modelo só consegue estimar uma probabilidade, não decidir.</li>
+      <li>Como parte dos casos positivos está nessa faixa intermediária, o modelo deixa de identificar cerca de 3 em cada 10 pessoas com diabetes (recall de aproximadamente 69% no teste). Um resultado “baixo” não descarta a doença.</li>
+      <li>Não distingue tipo 1, tipo 2 ou gestacional, e foi treinado com pessoas de até 80 anos (17% dos registros têm menos de 18 anos); fora dessa faixa de idade o resultado é menos confiável.</li>
+      <li>Nenhum dado digitado é armazenado pela aplicação.</li>
+    </ul>
+  </section>
+  <div class="foot">Projeto da disciplina Tópicos Avançados em Inteligência Artificial. Dataset: Diabetes prediction dataset (Kaggle, M. Mustafa). Também disponível como API: <code>POST /api/predict</code>.</div>
+</div>
+</body>
+</html>

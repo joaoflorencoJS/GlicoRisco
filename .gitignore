@@ -1,0 +1,29 @@
+# Ambientes virtuais
+.venv/
+venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Testes, cobertura e ferramentas de qualidade
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# Arquivos locais e segredos
+.env
+.env.*
+!.env.example
+*.local
+
+# Configurações de editor e sistema operacional
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

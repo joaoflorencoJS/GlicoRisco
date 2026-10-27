@@ -1,0 +1,68 @@
+{
+  "modelo": "Árvore de Decisão",
+  "features": [
+    "age",
+    "bmi",
+    "HbA1c_level",
+    "blood_glucose_level",
+    "hypertension",
+    "heart_disease",
+    "gender",
+    "smoking_history"
+  ],
+  "sklearn_version": "1.8.0",
+  "ranges": {
+    "age": [
+      0.08,
+      80.0
+    ],
+    "bmi": [
+      10.01,
+      95.69
+    ],
+    "HbA1c_level": [
+      3.5,
+      9.0
+    ],
+    "blood_glucose_level": [
+      80.0,
+      300.0
+    ]
+  },
+  "categorias": {
+    "gender": [
+      "Female",
+      "Male"
+    ],
+    "smoking_history": [
+      "No Info",
+      "current",
+      "ever",
+      "former",
+      "never",
+      "not current"
+    ]
+  },
+  "prevalencia_treino": 0.08824217835686979,
+  "metricas_teste": {
+    "accuracy": 0.9716009570373453,
+    "precision": 0.989778534923339,
+    "recall": 0.6851415094339622,
+    "f1": 0.8097560975609757,
+    "roc_auc": 0.9708778549440851,
+    "pr_auc": 0.8522612370680546,
+    "precision_neg": 0.9704187901617549,
+    "recall_neg": 0.9993154592127781,
+    "f1_neg": 0.984655162722725,
+    "cm": [
+      [
+        17518,
+        12
+      ],
+      [
+        534,
+        1162
+      ]
+    ]
+  }
+}
