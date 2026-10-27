@@ -8,6 +8,45 @@ Trabalho prático da disciplina **Tópicos Avançados em Inteligência Artificia
 
 A aplicação recebe idade, sexo, IMC, HbA1c, glicose, hipertensão, doença cardíaca e histórico de tabagismo, e devolve a **probabilidade estimada de diabetes**, uma **faixa de risco** (baixo, moderado, alto) e a classificação do modelo. É uma ferramenta **educacional**, não diagnóstica.
 
+## Executar na máquina pessoal
+
+Para executar a aplicação localmente, é necessário ter o **Python 3.12** instalado. Abra um terminal na pasta do projeto e siga as instruções para o seu sistema operacional. Os comandos abaixo criam um ambiente virtual, instalam as dependências e iniciam o servidor Flask.
+
+O pipeline treinado já está incluído em `models/`; **não é necessário executar `train.py`** para usar a aplicação.
+
+### Linux
+
+```bash
+python3.12 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+python app.py
+```
+
+### Windows (PowerShell)
+
+```powershell
+py -3.12 -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
+python app.py
+```
+
+Se o PowerShell bloquear a ativação do ambiente virtual, execute `.\.venv\Scripts\activate.bat` no Prompt de Comando (cmd) em vez de ativá-lo no PowerShell.
+
+Quando o servidor iniciar, abra **http://127.0.0.1:5000** no navegador. Para encerrá-lo, pressione `Ctrl+C` no terminal. A rota **http://127.0.0.1:5000/health** permite verificar se a aplicação está respondendo.
+
+### Alternativa com Docker
+
+Com o Docker instalado e em execução, estes comandos funcionam no Linux, no Windows PowerShell e no Prompt de Comando, a partir da pasta do projeto:
+
+```bash
+docker build -t glicorisco .
+docker run --rm -p 7860:7860 glicorisco
+```
+
+Com o contêiner em execução, acesse **http://127.0.0.1:7860**. Para encerrá-lo, pressione `Ctrl+C`.
+
 ## Resumo técnico
 
 * **Problema:** classificação binária supervisionada (`diabetes` = 0/1).
@@ -34,4 +73,3 @@ casos\\\_de\\\_teste.pdf      casos de teste com capturas de tela
 tests/                  run\\\_tests.py, results.json, screenshots/
 requirements.txt  Dockerfile  Procfile
 ```
-
